@@ -15,18 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 use App\Models\Item;
 
-Route::get('/items', function () {
-    return response()->json(Item::all());
-});
+use App\Http\Controllers\Api\StationController;
 
-Route::post('/items', function (Request $request) {
-    $request->validate([
-        'name' => 'required|string|max:255',
-    ]);
-    
-    $item = Item::create(['name' => $request->name]);
-    return response()->json($item, 201);
-});
+Route::post('/stations', [StationController::class, 'store']);
+Route::get('/stations', [StationController::class, 'index']); 
+
+
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
