@@ -17,6 +17,10 @@ use App\Models\Item;
 
 use App\Http\Controllers\Api\StationController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\DiscountController;
+use App\Http\Controllers\Api\DiscountCardController;
+use App\Http\Controllers\Api\UserRoleController;
+
 
 //stations
 Route::post('/stations', [StationController::class, 'store']);
@@ -30,5 +34,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/users', [UserController::class, 'index']);
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
-
 Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getUser']);
+
+//discounts
+Route::apiResource('zlavy', DiscountController::class); // vygeneruje všetky CRUD operácie
+Route::get('/zlavy', [DiscountController::class, 'index']);        
+Route::get('/zlavy/{id}', [DiscountController::class, 'show']);    
+Route::post('/zlavy', [DiscountController::class, 'store']);       
+Route::put('/zlavy/{id}', [DiscountController::class, 'update']);  
+Route::delete('/zlavy/{id}', [DiscountController::class, 'destroy']); 
+
+//discountCard
+Route::apiResource('karty', DiscountCardController::class);
+
+//user Roles
+Route::apiResource('roles', DiscountCardController::class);
