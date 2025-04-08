@@ -26,15 +26,17 @@ class UserController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'user_role' => 1, // Predvolená rola pre nového používateľa
         ]);
 
         // Vytvorenie tokenu pre prihlásenie
         $token = $user->createToken('API Token')->plainTextToken;
-
+        $privilege = $user->role->privilege;
         // Vrátenie odpovede s tokenom
         return response()->json([
             'message' => 'User registered successfully',
             'token' => $token,
+            'privilege' => $privilege,
         ], 201);
     }
 
@@ -52,9 +54,12 @@ class UserController extends Controller
             $user = Auth::user();
             $token = $user->createToken('API Token')->plainTextToken;
 
+
+            $privilege = $user->role->privilege;
             return response()->json([
                 'message' => 'Login successful',
                 'token' => $token,
+                'privilege' => $privilege,
             ]);
         } else {
             return response()->json(['message' => 'Invalid credentials'], 401);

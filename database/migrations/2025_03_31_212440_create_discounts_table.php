@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nazov', 100)->comment('napriklad dochodcovska');
             $table->integer('vyska')->comment('od nula do sto budu to percenta zlavy');
+            $table->timestamps();
         });        
     }
 

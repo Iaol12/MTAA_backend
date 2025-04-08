@@ -20,7 +20,8 @@ return new class extends Migration
             $table->timestamp('platny_od')->nullable();
             $table->timestamp('platny_do')->nullable();
             $table->string('qr_token', 255)->comment('lepsie ako ked qr je id listku');
-        
+            $table->timestamps();
+            
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('train_id')->references('id')->on('trains');
             $table->foreign('start_station')->references('id')->on('stations');
