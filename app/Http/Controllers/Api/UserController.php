@@ -16,19 +16,22 @@ class UserController extends Controller
     {
         // Validácia vstupných údajov
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed', // password_confirmation je druhé heslo na overenie
         ]);
 
         // Vytvorenie používateľa
         $user = User::create([
-            'name' => $validated['name'],
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'user_role' => 1, // Predvolená rola pre nového používateľa
+            'user_role' => 1,
         ]);
 
+        $role = $user->role;
         // Vytvorenie tokenu pre prihlásenie
         $token = $user->createToken('API Token')->plainTextToken;
         $privilege = $user->role->privilege;
@@ -74,6 +77,34 @@ class UserController extends Controller
         ]);
     }
 
+    // Úprava profilu prihláseného používateľa
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        // Validácia údajov – heslo nemusí byť povinné, ale ak sa zadá, musí byť potvrdené
+        $validated = $request->validate([
+            'first_name' => 'sometimes|required|string|max:255',
+            'last_name' => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        // Aktualizácia údajov
+        if (isset($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
+
+        $user->update($validated);
+
+        return response()->json([
+            'message' => 'Profil bol úspešne aktualizovaný.',
+            'user' => $user
+        ]);
+    }
+    
     public function index()
     {
         return response()->json(User::all());
