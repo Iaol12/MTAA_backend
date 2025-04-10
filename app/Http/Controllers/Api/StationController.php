@@ -8,6 +8,21 @@ use Illuminate\Http\Request;
 
 class StationController extends Controller
 {
+
+    public function search(Request $request)
+    {
+        $request->validate([
+            'starts_with' => 'required|string|min:3',
+        ]);
+
+        $query = $request->input('starts_with');
+
+        $stations = Station::where('name', 'ILIKE', $query . '%')->get();
+        
+        return response()->json($stations);
+    }
+
+
     public function store(Request $request)
     {
         $validated = $request->validate([

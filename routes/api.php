@@ -24,7 +24,9 @@ use App\Http\Controllers\Api\UserRoleController;
 
 //stations
 Route::post('/stations', [StationController::class, 'store']);
-Route::get('/stations', [StationController::class, 'index']); 
+Route::get('/stations', [StationController::class, 'index']);
+Route::post('/stations/search', [StationController::class, 'search']);
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

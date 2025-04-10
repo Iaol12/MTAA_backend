@@ -15,5 +15,5 @@ chod do directory kde si to clonol z githubu a daj toto
 composer install
 php artisan key:generate
 php artisan migrate
-php artisan serve
+php artisan serve --host=0.0.0.0 --port=8000
 ```
