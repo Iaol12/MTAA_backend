@@ -28,14 +28,13 @@ Route::get('/stations', [StationController::class, 'index']);
 Route::post('/stations/search', [StationController::class, 'search']);
 
 
-
-
 //user
 Route::get('/users', [UserController::class, 'index']);
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getUser']);
-Route::middleware('auth:sanctum')->post('/updateProfile', [UserController::class, 'updateProfile']);
+Route::middleware('auth:sanctum')->put('/user/profile', [UserController::class, 'updateProfile']);
+
 
 //discounts
 Route::apiResource('zlavy', DiscountController::class); // vygeneruje všetky CRUD operácie
