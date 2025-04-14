@@ -20,7 +20,11 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\DiscountCardController;
 use App\Http\Controllers\Api\UserRoleController;
+use App\Http\Controllers\Api\TrainController;
+use App\Http\Controllers\ImageController;
 
+//trains
+Route::get('/trains/search', [TrainController::class, 'searchTrains']);
 
 //stations
 Route::post('/stations', [StationController::class, 'store']);
@@ -49,3 +53,7 @@ Route::apiResource('karty', DiscountCardController::class);
 
 //user Roles
 Route::apiResource('roles', UserRoleController::class);
+
+//other
+Route::post('/upload', [ImageController::class, 'store']);
+
