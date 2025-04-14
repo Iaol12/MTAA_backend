@@ -54,6 +54,8 @@ Route::apiResource('karty', DiscountCardController::class);
 //user Roles
 Route::apiResource('roles', UserRoleController::class);
 
-//other
+//post image
 Route::post('/upload', [ImageController::class, 'store']);
 
+//get image
+Route::get('/image/{filename}', [ImageController::class, 'show']);

@@ -64,4 +64,40 @@ class ImageController extends Controller
 
         return response()->json(['path' => $path], 201);
     }
+
+
+/**
+ * @OA\Get(
+ *     path="/api/image/{filename}",
+ *     tags={"Image"},
+ *     summary="Downloads an image by filename",
+ *     @OA\Parameter(
+ *         name="filename",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Binary image file",
+ *         @OA\MediaType(
+ *             mediaType="image/jpeg"
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Image not found"
+ *     )
+ * )
+ */
+    public function show($filename)
+    {
+        $path = storage_path("app/public/images/{$filename}");
+
+        if (!file_exists($path)) {
+            return response()->json(['message' => 'File not found.'], 404);
+        }
+
+        return response()->file($path);
+    }
 }
