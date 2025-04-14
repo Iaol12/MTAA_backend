@@ -7,22 +7,38 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    // Registrácia nového používateľa
+    /**
+     * @OA\Post(
+     *     path="/api/register",
+     *     summary="Register new user",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"first_name","last_name","email","password","password_confirmation"},
+     *             @OA\Property(property="first_name", type="string"),
+     *             @OA\Property(property="last_name", type="string"),
+     *             @OA\Property(property="email", type="string", format="email"),
+     *             @OA\Property(property="password", type="string", format="password"),
+     *             @OA\Property(property="password_confirmation", type="string", format="password")
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="User registered successfully"),
+     *     @OA\Response(response=422, description="Validation error")
+     * )
+     */
     public function register(Request $request)
     {
-        // Validácia vstupných údajov
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed', // password_confirmation je druhé heslo na overenie
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Vytvorenie používateľa
         $user = User::create([
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
@@ -31,11 +47,9 @@ class UserController extends Controller
             'user_role' => 1,
         ]);
 
-        $role = $user->role;
-        // Vytvorenie tokenu pre prihlásenie
         $token = $user->createToken('API Token')->plainTextToken;
         $privilege = $user->role->privilege;
-        // Vrátenie odpovede s tokenom
+
         return response()->json([
             'message' => 'User registered successfully',
             'token' => $token,
@@ -43,22 +57,35 @@ class UserController extends Controller
         ], 201);
     }
 
-    // Prihlásenie používateľa
+    /**
+     * @OA\Post(
+     *     path="/api/login",
+     *     summary="Login user",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email","password"},
+     *             @OA\Property(property="email", type="string", format="email"),
+     *             @OA\Property(property="password", type="string", format="password")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Login successful"),
+     *     @OA\Response(response=401, description="Invalid credentials")
+     * )
+     */
     public function login(Request $request)
     {
-        // Validácia údajov
         $validated = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
-        // Overenie používateľa
         if (Auth::attempt(['email' => $validated['email'], 'password' => $validated['password']])) {
             $user = Auth::user();
             $token = $user->createToken('API Token')->plainTextToken;
-
-
             $privilege = $user->role->privilege;
+
             return response()->json([
                 'message' => 'Login successful',
                 'token' => $token,
@@ -69,20 +96,47 @@ class UserController extends Controller
         }
     }
 
-    // Získanie informácií o prihlásenom používateľovi
+    /**
+     * @OA\Get(
+     *     path="/api/user",
+     *     summary="Get authenticated user",
+     *     tags={"User"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Response(response=200, description="Authenticated user info"),
+     *     @OA\Response(response=401, description="Unauthenticated")
+     * )
+     */
     public function getUser(Request $request)
     {
         return response()->json([
-            'user' => $request->user(), // Vráti prihláseného používateľa
+            'user' => $request->user(),
         ]);
     }
 
-    // Úprava profilu prihláseného používateľa
+    /**
+     * @OA\Put(
+     *     path="/api/updateProfile",
+     *     summary="Update profile of authenticated user",
+     *     tags={"User"},
+     *     security={{"sanctum": {}}},
+     *     @OA\RequestBody(
+     *         required=false,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="first_name", type="string"),
+     *             @OA\Property(property="last_name", type="string"),
+     *             @OA\Property(property="email", type="string", format="email"),
+     *             @OA\Property(property="password", type="string", format="password"),
+     *             @OA\Property(property="password_confirmation", type="string", format="password")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Profile updated successfully"),
+     *     @OA\Response(response=401, description="Unauthenticated")
+     * )
+     */
     public function updateProfile(Request $request)
     {
         $user = $request->user();
 
-        // Validácia údajov – heslo nemusí byť povinné, ale ak sa zadá, musí byť potvrdené
         $validated = $request->validate([
             'first_name' => 'sometimes|required|string|max:255',
             'last_name' => 'sometimes|required|string|max:255',
@@ -90,7 +144,6 @@ class UserController extends Controller
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        // Aktualizácia údajov
         if (isset($validated['password'])) {
             $validated['password'] = Hash::make($validated['password']);
         } else {
@@ -104,12 +157,17 @@ class UserController extends Controller
             'user' => $user
         ]);
     }
-    
+
+    /**
+     * @OA\Get(
+     *     path="/api/users",
+     *     summary="Get list of all users",
+     *     tags={"User"},
+     *     @OA\Response(response=200, description="List of users")
+     * )
+     */
     public function index()
     {
         return response()->json(User::all());
     }
-
-
-
 }
