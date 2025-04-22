@@ -1,0 +1,934 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My First API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/discount-cards": {
+            "get": {
+                "tags": [
+                    "Discount Cards"
+                ],
+                "summary": "Get all discount cards",
+                "operationId": "ffa3fec293bc17b0d674d1f43613aa68",
+                "responses": {
+                    "200": {
+                        "description": "List of discount cards"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Discount Cards"
+                ],
+                "summary": "Create a new discount card",
+                "operationId": "361ebe2b8c6861ed3bc0148efa8f31bc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "zlava_id",
+                                    "zlavovy_kod"
+                                ],
+                                "properties": {
+                                    "zlava_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "zlavovy_kod": {
+                                        "type": "string",
+                                        "example": "DISCOUNT2025"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Discount card created"
+                    }
+                }
+            }
+        },
+        "/api/discount-cards/{id}": {
+            "get": {
+                "tags": [
+                    "Discount Cards"
+                ],
+                "summary": "Get a specific discount card",
+                "operationId": "abc317b96739547b9287297b2255fc46",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the discount card",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount card details"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Discount Cards"
+                ],
+                "summary": "Update a discount card",
+                "operationId": "c16da8855477c25f77d50adadb1cb565",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the discount card",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "zlava_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "zlavovy_kod": {
+                                        "type": "string",
+                                        "example": "DISCOUNT2025"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Discount card updated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Discount Cards"
+                ],
+                "summary": "Delete a discount card",
+                "operationId": "82942751a54951a03ab12658c5bc8060",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the discount card",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount card deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Zľavová karta bola vymazaná."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/discounts": {
+            "get": {
+                "tags": [
+                    "Discounts"
+                ],
+                "summary": "Get all discounts",
+                "operationId": "eaa03209dcdee72030b74953ddb84bee",
+                "responses": {
+                    "200": {
+                        "description": "List of discounts"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Discounts"
+                ],
+                "summary": "Create a new discount",
+                "operationId": "9fad542c7104853a4bcb49d059f4d242",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nazov",
+                                    "vyska"
+                                ],
+                                "properties": {
+                                    "nazov": {
+                                        "type": "string",
+                                        "example": "Summer Sale"
+                                    },
+                                    "vyska": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 20.5
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Discount created"
+                    }
+                }
+            }
+        },
+        "/api/discounts/{id}": {
+            "get": {
+                "tags": [
+                    "Discounts"
+                ],
+                "summary": "Get a specific discount",
+                "operationId": "00178dc9f7f203e911afc5909d70ee68",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the discount",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount details"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Discounts"
+                ],
+                "summary": "Update a discount",
+                "operationId": "7d4f99b630ac17ab9ed0a5f7d0ccf888",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the discount",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nazov": {
+                                        "type": "string",
+                                        "example": "Winter Sale"
+                                    },
+                                    "vyska": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 15
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Discount updated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Discounts"
+                ],
+                "summary": "Delete a discount",
+                "operationId": "c5d8f8e842a2dca9bd212b0945b44762",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the discount",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Discount deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Zľava bola vymazaná"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/stations": {
+            "get": {
+                "tags": [
+                    "Stations"
+                ],
+                "summary": "Get all stations",
+                "operationId": "169c0910e38928ff56efb1027ff472fe",
+                "responses": {
+                    "200": {
+                        "description": "List of all stations"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Stations"
+                ],
+                "summary": "Create a new station",
+                "operationId": "6cecf862996dda377a5e3412fd5cf087",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Central Station"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Station created"
+                    }
+                }
+            }
+        },
+        "/api/stations/search": {
+            "post": {
+                "tags": [
+                    "Stations"
+                ],
+                "summary": "Search for stations by name prefix",
+                "operationId": "ccf6f46b8c8393278cdc73a6e8835890",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "starts_with"
+                                ],
+                                "properties": {
+                                    "starts_with": {
+                                        "type": "string",
+                                        "example": "New"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "List of matching stations"
+                    }
+                }
+            }
+        },
+        "/api/trains/search": {
+            "post": {
+                "tags": [
+                    "Trains"
+                ],
+                "summary": "Search for trains between two stations",
+                "operationId": "d9e2448f2d4fe13aab9774dafb8dec4c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "from_station",
+                                    "to_station",
+                                    "departure_time"
+                                ],
+                                "properties": {
+                                    "from_station": {
+                                        "description": "Name of the departure station",
+                                        "type": "string",
+                                        "example": "Central Station"
+                                    },
+                                    "to_station": {
+                                        "description": "Name of the destination station",
+                                        "type": "string",
+                                        "example": "North Station"
+                                    },
+                                    "departure_time": {
+                                        "description": "Desired departure time in 'Y-m-d H:i:s' format",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-04-15 08:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "List of trains matching the search criteria",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "trains": {}
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Register new user",
+                "operationId": "482fd8cbb98dc3225fa0e7ac40c1abe6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Login user",
+                "operationId": "afd167661891a2c4c1b49a04643b9223",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get authenticated user",
+                "operationId": "3671108ef08ef7ba13008db3dfd0a947",
+                "responses": {
+                    "200": {
+                        "description": "Authenticated user info"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/updateProfile": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update profile of authenticated user",
+                "operationId": "33d63a49085a671a170e23de26f1abdf",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile updated successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get list of all users",
+                "operationId": "566aed8efb436ca506e0ef51a032ecd9",
+                "responses": {
+                    "200": {
+                        "description": "List of users"
+                    }
+                }
+            }
+        },
+        "/api/user-roles": {
+            "get": {
+                "tags": [
+                    "User Roles"
+                ],
+                "summary": "Get all user roles",
+                "operationId": "5def8f7f8452aaf9a2b02cdb217d4e1b",
+                "responses": {
+                    "200": {
+                        "description": "List of all user roles"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "User Roles"
+                ],
+                "summary": "Create a new user role",
+                "operationId": "b19eaa027d6763b45aa3b103cd2c4c0d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "role_name",
+                                    "privilege"
+                                ],
+                                "properties": {
+                                    "role_name": {
+                                        "type": "string",
+                                        "example": "Admin"
+                                    },
+                                    "privilege": {
+                                        "type": "string",
+                                        "example": "Full Access"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User role created"
+                    }
+                }
+            }
+        },
+        "/api/user-roles/{id}": {
+            "get": {
+                "tags": [
+                    "User Roles"
+                ],
+                "summary": "Get a specific user role",
+                "operationId": "df2df80724654054dbddda8082169fb6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User role details"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "User Roles"
+                ],
+                "summary": "Update an existing user role",
+                "operationId": "dd1e8c60ea5304801982ecb6549e0da9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "role_name": {
+                                        "type": "string",
+                                        "example": "user"
+                                    },
+                                    "privilege": {
+                                        "type": "string",
+                                        "example": "admin"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User role updated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "User Roles"
+                ],
+                "summary": "Delete a user role",
+                "operationId": "41802a14c26b60c2e9afeb09dc7d57f5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User role deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Rola bola vymazaná."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/upload": {
+            "post": {
+                "tags": [
+                    "Image"
+                ],
+                "summary": "Uploads an image to the backend server",
+                "description": "This endpoint allows users to upload an image file to the server. The image must not exceed 2MB in size.",
+                "operationId": "cbe19c7043652a9aebedab79a9bdaa25",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "image"
+                                ],
+                                "properties": {
+                                    "image": {
+                                        "description": "The image file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Image uploaded successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "path": {
+                                            "description": "The path to the uploaded image",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/image/{filename}": {
+            "get": {
+                "tags": [
+                    "Image"
+                ],
+                "summary": "Downloads an image by filename",
+                "operationId": "d360a3e1b47f12aeb58c097a554119fd",
+                "parameters": [
+                    {
+                        "name": "filename",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Binary image file",
+                        "content": {
+                            "image/jpeg": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Image not found"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Discount Cards",
+            "description": "Discount Cards"
+        },
+        {
+            "name": "Discounts",
+            "description": "Discounts"
+        },
+        {
+            "name": "Stations",
+            "description": "Stations"
+        },
+        {
+            "name": "Trains",
+            "description": "Trains"
+        },
+        {
+            "name": "User",
+            "description": "User"
+        },
+        {
+            "name": "User Roles",
+            "description": "User Roles"
+        },
+        {
+            "name": "Image",
+            "description": "Image"
+        }
+    ]
+}

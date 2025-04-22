@@ -8,7 +8,42 @@ use Illuminate\Http\Request;
 
 class StationController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/stations",
+     *     summary="Get all stations",
+     *     tags={"Stations"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of all stations"
+     *         
+     *     )
+     * )
+     */
+    public function index()
+    {
+        return response()->json(['stations' => Station::all()]);
+    }
 
+    /**
+     * @OA\Post(
+     *     path="/api/stations/search",
+     *     summary="Search for stations by name prefix",
+     *     tags={"Stations"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"starts_with"},
+     *             @OA\Property(property="starts_with", type="string", example="New")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of matching stations"
+     *         
+     *     )
+     * )
+     */
     public function search(Request $request)
     {
         $request->validate([
@@ -22,7 +57,24 @@ class StationController extends Controller
         return response()->json($stations);
     }
 
-
+    /**
+     * @OA\Post(
+     *     path="/api/stations",
+     *     summary="Create a new station",
+     *     tags={"Stations"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string", example="Central Station")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Station created"
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -32,10 +84,5 @@ class StationController extends Controller
         $station = Station::create($validated);
 
         return response()->json(['station' => $station], 201);
-    }
-
-    public function index()
-    {
-        return response()->json(['stations' => Station::all()]);
     }
 }

@@ -8,13 +8,43 @@ use Illuminate\Http\Request;
 
 class UserRoleController extends Controller
 {
-    // Zoznam všetkých rolí
+    /**
+     * @OA\Get(
+     *     path="/api/user-roles",
+     *     summary="Get all user roles",
+     *     tags={"User Roles"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of all user roles",
+     *         
+     *     )
+     * )
+     */
     public function index()
     {
         return response()->json(UserRole::with('users')->get());
     }
 
-    // Vytvorenie novej role
+    /**
+     * @OA\Post(
+     *     path="/api/user-roles",
+     *     summary="Create a new user role",
+     *     tags={"User Roles"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"role_name", "privilege"},
+     *             @OA\Property(property="role_name", type="string", example="Admin"),
+     *             @OA\Property(property="privilege", type="string", example="Full Access")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="User role created",
+     *         
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -27,14 +57,57 @@ class UserRoleController extends Controller
         return response()->json($role, 201);
     }
 
-    // Zobrazenie jednej role podľa ID
+    /**
+     * @OA\Get(
+     *     path="/api/user-roles/{id}",
+     *     summary="Get a specific user role",
+     *     tags={"User Roles"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the user role"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User role details",
+     *         
+     *     )
+     * )
+     */
     public function show($id)
     {
         $role = UserRole::with('users')->findOrFail($id);
         return response()->json($role);
     }
 
-    // Update existujúcej role
+    /**
+     * @OA\Put(
+     *     path="/api/user-roles/{id}",
+     *     summary="Update an existing user role",
+     *     tags={"User Roles"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the user role"
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="role_name", type="string", example="user"),
+     *             @OA\Property(property="privilege", type="string", example="admin")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User role updated",
+     *         
+     *     )
+     * )
+     */
     public function update(Request $request, $id)
     {
         $role = UserRole::findOrFail($id);
@@ -49,7 +122,27 @@ class UserRoleController extends Controller
         return response()->json($role);
     }
 
-    // Vymazanie role
+    /**
+     * @OA\Delete(
+     *     path="/api/user-roles/{id}",
+     *     summary="Delete a user role",
+     *     tags={"User Roles"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the user role"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="User role deleted",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Rola bola vymazaná.")
+     *         )
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $role = UserRole::findOrFail($id);
