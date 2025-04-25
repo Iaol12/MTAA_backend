@@ -24,7 +24,7 @@ use App\Http\Controllers\Api\TrainController;
 use App\Http\Controllers\ImageController;
 
 //trains
-Route::get('/trains/search', [TrainController::class, 'searchTrains']);
+Route::post('/trains/search', [TrainController::class, 'searchTrains']);
 Route::post('/trains', [TrainController::class, 'store']);
 
 //stations

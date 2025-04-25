@@ -9,9 +9,6 @@ use App\Models\Station;
 use App\Models\Train;
 use Illuminate\Support\Facades\Log;
 
-
-
-
 class TrainController extends Controller
 {
     /**
@@ -72,9 +69,9 @@ class TrainController extends Controller
 
         // Create the train
         $train = Train::create([
-    'name' => $validated['name'],
-    'schedule' => $validated['schedule'],
-]);
+            'name' => $validated['name'],
+            'schedule' => $validated['schedule'],
+        ]);
 
         // Create the routes
         foreach ($validated['routes'] as $route) {
@@ -91,6 +88,7 @@ class TrainController extends Controller
             'routes' => $train->routes,
         ], 201);
     }
+
     /**
      * @OA\Post(
      *     path="/api/trains/search",
@@ -134,29 +132,47 @@ class TrainController extends Controller
             'departure_time' => 'required|date_format:Y-m-d H:i:s',
         ]);
 
-        $fromStation = $request->input('from_station');
-        $fromStationId = Station::where('name', $fromStation)->first()->id;
-        $toStation = $request->input('to_station');
-        $toStationId = Station::where('name', $toStation)->first()->id;
+        $fromStationId = $request->input('from_station');
+        $toStationId = $request->input('to_station');
         $departureTime = $request->input('departure_time');
 
         // Query to find trains that satisfy the criteria
-        $trains = Train::whereHas('routes', function ($query) use ($fromStationId) {
-            $query->where('station_id', $fromStationId);
+        $trains = Train::whereHas('routes', function ($query) use ($fromStationId, $departureTime) {
+            $query->where('station_id', $fromStationId)
+                  ->where('departure_time', '>=', $departureTime);
         })
         ->whereHas('routes', function ($query) use ($toStationId) {
             $query->where('station_id', $toStationId);
         })
-        ->with(['routes' => function ($query) use ($fromStationId, $toStationId) {
-            $query->whereIn('station_id', [$fromStationId, $toStationId])
-                  ->orderBy('sequence_number');
-        }])
+        ->with('routes.station')
         ->get()
         ->filter(function ($train) use ($fromStationId, $toStationId) {
             $from = $train->routes->firstWhere('station_id', $fromStationId);
             $to   = $train->routes->firstWhere('station_id', $toStationId);
 
             return $from && $to && $from->sequence_number < $to->sequence_number;
+        });
+
+        // Filter routes to include only those between from_station and to_station
+        $trains = $trains->map(function ($train) use ($fromStationId, $toStationId) {
+            $fromSequence = $train->routes->firstWhere('station_id', $fromStationId)->sequence_number;
+            $toSequence = $train->routes->firstWhere('station_id', $toStationId)->sequence_number;
+
+            $filteredRoutes = $train->routes->filter(function ($route) use ($fromSequence, $toSequence) {
+                return $route->sequence_number >= $fromSequence && $route->sequence_number <= $toSequence;
+            })->map(function ($route) {
+                return [
+                    'station_id' => $route->station_id,
+                    'station_name' => $route->station->name,
+                    'sequence_number' => $route->sequence_number,
+                    'departure_time' => $route->departure_time,
+                ];
+            });
+
+            // Override the routes relationship with the filtered collection
+            $train->setRelation('routes', $filteredRoutes);
+
+            return $train;
         });
 
         return response()->json(['trains' => $trains]);

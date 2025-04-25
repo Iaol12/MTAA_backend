@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Train extends Model
 {
-    protected $fillable = ['name', 'schedule', 'delay'];
+    protected $fillable = ['name', 'delay'];
 
     public function routes()
     {

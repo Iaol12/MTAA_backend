@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('routes', function (Blueprint $table) {
+            $table->id(); // pridá BIGINT AUTO_INCREMENT PRIMARY KEY
             $table->unsignedBigInteger('train_id');
             $table->unsignedBigInteger('station_id');
             $table->integer('sequence_number');
-            $table->timestamp('departure_time')->nullable();
+            $table->timestampTz('departure_time')->nullable();
         
             $table->foreign('train_id')->references('id')->on('trains');
             $table->foreign('station_id')->references('id')->on('stations');

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('stations', function (Blueprint $table) {
             $table->id(); // id INTEGER PRIMARY KEY
-            $table->string('name');
+            $table->string('name')->unique(); 
             $table->timestamps(); // adds created_at and updated_at
         });
     }
