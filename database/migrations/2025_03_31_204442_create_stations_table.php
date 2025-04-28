@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('stations', function (Blueprint $table) {
             $table->id(); // id INTEGER PRIMARY KEY
             $table->string('name')->unique(); 
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->timestamps(); // adds created_at and updated_at
         });
     }
