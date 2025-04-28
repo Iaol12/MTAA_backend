@@ -9,11 +9,13 @@ docker run --name postgres -e POSTGRES_USER=laravel_user -e POSTGRES_PASSWORD=se
 
 # potom laravel sa spusta takto: 
 
+do .env daj veci co som ti poslal na dc
 
 chod do directory kde si to clonol z githubu a daj toto
 ```
 composer install
 php artisan key:generate
 php artisan migrate
-php artisan serve --host=0.0.0.0 --port=8000
+php artisan db:seed
+php artisan serve --host=0.0.0.0 --port=8002
 ```
