@@ -22,6 +22,8 @@ use App\Http\Controllers\Api\DiscountCardController;
 use App\Http\Controllers\Api\UserRoleController;
 use App\Http\Controllers\Api\TrainController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\StripeWebhookController;
 
 //trains
 Route::post('/trains/search', [TrainController::class, 'searchTrains']);
@@ -60,3 +62,7 @@ Route::post('/upload', [ImageController::class, 'store']);
 
 //get image
 Route::get('/image/{filename}', [ImageController::class, 'show']);
+
+// payment
+Route::post('/payments/start', [PaymentController::class, 'start']);
+Route::post('/payment/webhook', [StripeWebhookController::class, 'handle']);
