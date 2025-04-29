@@ -51,6 +51,9 @@ class UserController extends Controller
         $privilege = $user->role->privilege;
 
         return response()->json([
+            'firstname' => $user->first_name,
+            'lastname' => $user->last_name,
+            'email' => $user->email,
             'message' => 'User registered successfully',
             'token' => $token,
             'privilege' => $privilege,
@@ -87,6 +90,9 @@ class UserController extends Controller
             $privilege = $user->role->privilege;
 
             return response()->json([
+                'firstname' => $user->first_name,
+                'lastname' => $user->last_name,
+                'email' => $user->email,
                 'message' => 'Login successful',
                 'token' => $token,
                 'privilege' => $privilege,
