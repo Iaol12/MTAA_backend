@@ -167,7 +167,7 @@ class TrainController extends Controller
                     'sequence_number' => $route->sequence_number,
                     'departure_time' => $route->departure_time,
                 ];
-            });
+            })->values();
 
             // Override the routes relationship with the filtered collection
             $train->setRelation('routes', $filteredRoutes);
@@ -176,5 +176,6 @@ class TrainController extends Controller
         });
 
         return response()->json(['trains' => $trains]);
+        // return response()->json(['trains' => $trains->toArray()]);
     }
 }
