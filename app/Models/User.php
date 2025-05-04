@@ -12,6 +12,9 @@ class User extends Authenticatable
 {
     use HasFactory;
     use HasApiTokens;
+
+    public $timestamps = false;
+    
     protected $fillable = [
         'email',
         'first_name',

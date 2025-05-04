@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name')->unique(); 
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
-            $table->timestamps(); // adds created_at and updated_at
         });
     }
     

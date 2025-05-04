@@ -21,7 +21,10 @@ class TicketController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $tickets = Ticket::where('user_id', $user->id)->get();
+        $tickets = Ticket::where('user_id', $user->id)
+        ->with(['train.routes', 'startStation', 'endStation'])
+            ->orderBy('created_at', 'desc')
+        ->get();
 
         return response()->json(['tickets' => $tickets]);
     }

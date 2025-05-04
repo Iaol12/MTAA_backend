@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class DiscountCard extends Model
 {
+
+    public $timestamps = false;
+
     protected $fillable = ['zlava_id', 'zlavovy_kod'];
 
     public function discount()

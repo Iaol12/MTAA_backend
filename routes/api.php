@@ -69,6 +69,5 @@ Route::middleware('auth:sanctum')->post('/payment/start', [PaymentController::cl
 Route::post('/payment/webhook', [StripeWebhookController::class, 'handle']);
 
 // tickets
-// Route::middleware('auth:sanctum')->get('/tickets', [TicketController::class, 'getUserTickets']);
+Route::middleware('auth:sanctum')->get('/tickets', [TicketController::class, 'getUserTickets']);
 
-Route::get('/tickets', [TicketController::class, 'getUserTickets']);

@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserRole extends Model
 {
+
+    public $timestamps = false;
+
     protected $fillable = ['role_name', 'privilege'];
 
     public function users()

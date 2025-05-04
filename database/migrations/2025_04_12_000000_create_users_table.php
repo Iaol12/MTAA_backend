@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('password', 100);
             $table->unsignedBigInteger('zlava_id')->nullable();
             $table->unsignedBigInteger('user_role')->default(1);
-            $table->timestamps();
             
             $table->foreign('zlava_id')->references('id')->on('discounts');
             $table->foreign('user_role')->references('id')->on('user_roles');
@@ -32,8 +31,6 @@ return new class extends Migration
             'password' => Hash::make('admin123'), // Securely hash the password
             'zlava_id' => null, // No discount for admin
             'user_role' => 2, // Admin role
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
         
     }

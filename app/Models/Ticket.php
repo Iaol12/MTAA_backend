@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
+
+    public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'train_id',

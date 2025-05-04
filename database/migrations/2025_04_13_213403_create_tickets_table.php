@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('end_station');
             $table->timestamp('platny_od')->nullable();
             $table->timestamp('platny_do')->nullable();
-            $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('train_id')->references('id')->on('trains');

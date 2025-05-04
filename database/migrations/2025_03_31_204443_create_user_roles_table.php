@@ -16,7 +16,6 @@ return new class extends Migration
             $table->id();
             $table->string('role_name', 255);
             $table->integer('privilege');
-            $table->timestamps();
         });       
         DB::table('user_roles')->insert([
             ['id' => 1, 'role_name' => 'User', 'privilege' => 1],

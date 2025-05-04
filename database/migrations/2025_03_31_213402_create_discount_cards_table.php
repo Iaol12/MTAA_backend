@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('zlava_id');
             $table->integer('zlavovy_kod');
-            $table->timestamps();
 
             $table->foreign('zlava_id')->references('id')->on('discounts');
         });        
