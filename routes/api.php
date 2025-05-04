@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 use App\Models\Item;
 
+use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\StationController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\DiscountController;
@@ -64,5 +65,10 @@ Route::post('/upload', [ImageController::class, 'store']);
 Route::get('/image/{filename}', [ImageController::class, 'show']);
 
 // payment
-Route::post('/payments/start', [PaymentController::class, 'start']);
+Route::middleware('auth:sanctum')->post('/payment/start', [PaymentController::class, 'start']);
 Route::post('/payment/webhook', [StripeWebhookController::class, 'handle']);
+
+// tickets
+// Route::middleware('auth:sanctum')->get('/tickets', [TicketController::class, 'getUserTickets']);
+
+Route::get('/tickets', [TicketController::class, 'getUserTickets']);

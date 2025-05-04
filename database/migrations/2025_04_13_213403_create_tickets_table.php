@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('end_station');
             $table->timestamp('platny_od')->nullable();
             $table->timestamp('platny_do')->nullable();
-            $table->string('qr_token', 255)->comment('lepsie ako ked qr je id listku');
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users');

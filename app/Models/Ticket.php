@@ -14,7 +14,6 @@ class Ticket extends Model
         'end_station',
         'platny_od',
         'platny_do',
-        'qr_token'
     ];
 
     public function user()
