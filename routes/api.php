@@ -44,6 +44,10 @@ Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'getUser
 Route::middleware('auth:sanctum')->put('/user/profile', [UserController::class, 'updateProfile']);
 
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/update-profile', [UserController::class, 'updateProfile']);
+});
+
 //discounts
 Route::apiResource('zlavy', DiscountController::class); // vygeneruje všetky CRUD operácie
 Route::get('/zlavy', [DiscountController::class, 'index']);     //v podstate tieto    
