@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->string('nazov', 100)->comment('napriklad dochodcovska');
-            $table->integer('vyska')->comment('od nula do sto budu to percenta zlavy');
+            $table->string('name', 100)->comment('napriklad dochodcovska');
+            $table->integer('coeficient')->comment('od nula do sto budu to percenta zlavy');
+            $table->string('card_code', 100)->comment('verifikacia, student = ISIC');
         });        
     }
 

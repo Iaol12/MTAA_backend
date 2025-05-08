@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('first_name', 255)->nullable();
             $table->string('last_name', 255)->nullable();
             $table->string('password', 100);
-            $table->unsignedBigInteger('zlava_id')->nullable();
+            $table->unsignedBigInteger('discount_id')->nullable();
+            $table->string('card_id', 100)->nullable();
             $table->unsignedBigInteger('user_role')->default(1);
-            
-            $table->foreign('zlava_id')->references('id')->on('discounts');
+
+            $table->foreign('discount_id')->references('id')->on('discounts');
             $table->foreign('user_role')->references('id')->on('user_roles');
         });
         DB::table('users')->insert([
@@ -29,7 +30,8 @@ return new class extends Migration
             'first_name' => 'Admin',
             'last_name' => 'User',
             'password' => Hash::make('admin123'), // Securely hash the password
-            'zlava_id' => null, // No discount for admin
+            'card_id' => null, // No card for admin
+            'discount_id' => null, // No discount for admin
             'user_role' => 2, // Admin role
         ]);
         

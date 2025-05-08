@@ -70,6 +70,7 @@ class TrainController extends Controller
         // Create the train
         $train = Train::create([
             'name' => $validated['name'],
+            'discounted_tickets' => 20,
             'schedule' => $validated['schedule'],
         ]);
 

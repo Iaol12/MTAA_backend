@@ -21,7 +21,8 @@ class UserSeeder extends Seeder
                 'first_name' => 'John',
                 'last_name' => 'Doe',
                 'password' => Hash::make('password123'),
-                'zlava_id' => null,
+                'discount_id' => null,
+                'card_id' => null,
                 'user_role' => 1, 
             ]
         ];

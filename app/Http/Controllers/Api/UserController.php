@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Discount;
 
 class UserController extends Controller
 {
@@ -54,6 +55,8 @@ class UserController extends Controller
             'firstname' => $user->first_name,
             'lastname' => $user->last_name,
             'email' => $user->email,
+            'card_id' => $user->card_id,
+            'discount' => $user->discount ? ['name' => $user->discount->name] : null,
             'message' => 'User registered successfully',
             'token' => $token,
             'privilege' => $privilege,
@@ -96,6 +99,10 @@ class UserController extends Controller
                 'message' => 'Login successful',
                 'token' => $token,
                 'privilege' => $privilege,
+                'card_id' => $user->card_id,
+                'discount' => $user->discount ? $user->discount->name : null,
+                'discount_coeficient' => $user->discount ? $user->discount->coeficient : null,
+                'discount_card_code' => $user->discount ? $user->discount->card_code : null,
             ]);
         } else {
             return response()->json(['message' => 'Invalid credentials'], 401);
@@ -142,22 +149,50 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user = $request->user();
-
+    
         $validated = $request->validate([
             'first_name' => 'sometimes|required|string|max:255',
             'last_name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
+            'card_id' => 'sometimes|nullable|string|max:100',
         ]);
-
-        if (isset($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
-        } else {
-            unset($validated['password']);
+    
+        // Ak je zadaný card_id, overíme, či existuje zľava s týmto card_code
+        if (array_key_exists('card_id', $validated)) {
+            // Vezmeme len prvé 4 znaky pre porovnanie
+            $cardPrefix = substr($validated['card_id'], 0, 4);
+        
+            // Hľadáme zľavu podľa prvých 4 znakov kódu
+            $discount = Discount::where('card_code', $cardPrefix)->first();
+            
+            if (!$discount && $validated['card_id'] !== null) {
+                return response()->json([
+                    'message' => 'Zľavová karta s týmto ID neexistuje.',
+                ], 422); // 422 Unprocessable Entity
+            }
+            
+            // Ak existuje zľava, priradíme ju k používateľovi
+            $user->card_id = $validated['card_id'];
+            $user->discount_id = $discount ? $discount->id : null;
         }
-
-        $user->update($validated);
-
+        
+    
+        // Ak je zadané heslo, hashujeme
+        if (!empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
+        }
+    
+        // Aktualizuj ďalšie polia
+        $user->first_name = $validated['first_name'] ?? $user->first_name;
+        $user->last_name = $validated['last_name'] ?? $user->last_name;
+        $user->email = $validated['email'] ?? $user->email;
+    
+        $user->save();
+    
+        // Načítaj discount pre frontend
+        $user->load('discount');
+    
         return response()->json([
             'message' => 'Profil bol úspešne aktualizovaný.',
             'user' => $user
