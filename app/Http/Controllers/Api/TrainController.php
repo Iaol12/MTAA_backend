@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Station;
 use App\Models\Train;
 use Illuminate\Support\Facades\Log;
+use App\Services\ExpoPushNotificationService;
+use App\Models\User;
 
 class TrainController extends Controller
 {
@@ -89,6 +91,67 @@ class TrainController extends Controller
             'routes' => $train->routes,
         ], 201);
     }
+
+
+    public function sendDelayNotification($trainId)
+    {
+        // Skontroluj, či je používateľ admin
+        if(auth()->user()->privilege != 2) {
+            return response()->json(['error' => 'Nemáte práva na odosielanie notifikácií.'], 403);
+        }
+
+        // Získaj všetkých používateľov s expo_token
+        $users = User::whereNotNull('expo_token')->get(); // môžeš filtrovať podľa rôznych kritérií
+
+        foreach ($users as $user) {
+            // Zavolaj ExpoPushNotificationService na odoslanie notifikácie
+            app(ExpoPushNotificationService::class)->sendPushNotification(
+                $user->expo_token,
+                'Notifikácia o meškaní',
+                'Vlak je oneskorený, prosím, počkajte na ďalšie informácie.'
+            );
+        }
+
+        return response()->json(['message' => 'Notifikácie odoslané.']);
+    }
+
+    public function delay(Request $request, Train $train)
+    {
+        $request->validate([
+            'hours' => 'nullable|integer|min:0',
+            'minutes' => 'required|integer|min:0',
+        ]);
+
+        // Získanie hodín a minút z requestu
+        $hours = $request->input('hours', 0); // Ak sú hodiny nevyplnené, predpokladáme 0
+        $minutes = $request->input('minutes');
+
+        // Spočítanie meškania v minútach
+        $delayMinutes = ($hours * 60) + $minutes;
+
+        // Ak používame typ time, prevod na správny formát
+        $delayTime = sprintf('%02d:%02d', floor($delayMinutes / 60), $delayMinutes % 60);
+
+        // Uloženie meškania ako čas
+        $train->delay = $delayTime;  // Predpokladáme, že delay je typu 'time'
+        $train->save();
+
+        // Poslať push notifikácie všetkým používateľom s expo tokenom
+        $users = User::whereNotNull('expo_token')->get();
+
+        foreach ($users as $user) {
+            app(\App\Services\ExpoPushNotificationService::class)->sendPushNotification(
+                $user->expo_token,
+                'Meškanie vlaku',
+                "{$train->name} mešká {$delayMinutes} minút."
+            );
+            \Log::info("Odosielam push pre používateľa {$user->id} na token {$user->expo_token}");
+        }
+
+        return response()->json(['message' => 'Meškanie bolo úspešne odoslané.']);
+    }
+
+
 
     /**
      * @OA\Post(
