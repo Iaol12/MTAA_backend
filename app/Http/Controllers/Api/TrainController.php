@@ -100,7 +100,9 @@ class TrainController extends Controller
      *             required={"from_station", "to_station", "departure_time"},
      *             @OA\Property(property="from_station", type="string", example="Central Station", description="Name of the departure station"),
      *             @OA\Property(property="to_station", type="string", example="North Station", description="Name of the destination station"),
-     *             @OA\Property(property="departure_time", type="string", format="date-time", example="2025-04-15 08:00:00", description="Desired departure time in 'Y-m-d H:i:s' format")
+     *             @OA\Property(property="departure_time", type="string", format="date-time", example="2025-04-15 08:00:00", description="Desired departure time in 'Y-m-d H:i:s' format"),
+     *             @OA\Property(property="page", type="integer", example=1, description="Page number for pagination"),
+     *             @OA\Property(property="per_page", type="integer", example=15, description="Number of trains per page")
      *         )
      *     ),
      *     @OA\Response(
@@ -110,6 +112,14 @@ class TrainController extends Controller
      *             type="object",
      *             @OA\Property(
      *                 property="trains",
+     *             ),
+     *             @OA\Property(
+     *                 property="pagination",
+     *                 type="object",
+     *                 @OA\Property(property="total", type="integer", example=100, description="Total number of trains"),
+     *                 @OA\Property(property="per_page", type="integer", example=15, description="Number of trains per page"),
+     *                 @OA\Property(property="current_page", type="integer", example=1, description="Current page number"),
+     *                 @OA\Property(property="last_page", type="integer", example=7, description="Last page number")
      *             )
      *         )
      *     ),
@@ -130,11 +140,15 @@ class TrainController extends Controller
             'from_station' => 'required|exists:stations,id',
             'to_station' => 'required|exists:stations,id',
             'departure_time' => 'required|date_format:Y-m-d H:i:s',
+            'page' => 'integer|min:1',
+            'per_page' => 'integer|min:1|max:50',
         ]);
 
         $fromStationId = $request->input('from_station');
         $toStationId = $request->input('to_station');
         $departureTime = $request->input('departure_time');
+        $page = $request->input('page', 1);
+        $perPage = $request->input('per_page', 15); // Default to 15 trains per page
 
         // Query to find trains that satisfy the criteria
         $trains = Train::whereHas('routes', function ($query) use ($fromStationId, $departureTime) {
@@ -175,7 +189,18 @@ class TrainController extends Controller
             return $train;
         });
 
-        return response()->json(['trains' => $trains]);
-        // return response()->json(['trains' => $trains->toArray()]);
+        // Apply pagination manually
+        $total = $trains->count();
+        $trainsPaginated = $trains->forPage($page, $perPage)->values();
+
+        return response()->json([
+            'trains' => $trainsPaginated,
+            'pagination' => [
+                'total' => $total,
+                'per_page' => $perPage,
+                'current_page' => $page,
+                'last_page' => ceil($total / $perPage),
+            ]
+        ]);
     }
 }

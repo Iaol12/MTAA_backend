@@ -15,7 +15,7 @@ class StationsTableSeeder extends Seeder
     public function run()
     {
         $stations = [
-            [ 'name' => 'Bratislava', 'longitude' => 17.1065192, 'latitude' => 48.1590802 ],
+            [ 'name' => 'Bratislava hl.st.', 'longitude' => 17.1065192, 'latitude' => 48.1590802 ],
             [ 'name' => 'Trnava', 'longitude' => 17.5851162, 'latitude' => 48.3697054 ],
             [ 'name' => 'Šenkvice', 'longitude' => 17.3458085, 'latitude' => 48.3018213 ],
             [ 'name' => 'Cífer', 'longitude' => 17.4865681, 'latitude' => 48.3228939 ],
@@ -38,7 +38,17 @@ class StationsTableSeeder extends Seeder
             [ 'name' => 'Dubnica nad Váhom', 'longitude' => 18.1677967, 'latitude' => 48.9662603 ],
             [ 'name' => 'Ilava', 'longitude' => 18.236353, 'latitude' => 49.002046 ],
             [ 'name' => 'Púchov', 'longitude' => 18.3273953, 'latitude' => 49.1133965 ],
+            [ 'name' => 'Považská Bystrica', 'longitude' => 18.432255, 'latitude' => 49.122510 ],
+            [ 'name' => 'Vrútky', 'longitude' => 18.923854, 'latitude' => 49.115421],
+            [ 'name' => 'Kraľovany', 'longitude' => 19.131775, 'latitude' => 49.153113],
+            [ 'name' => 'Ružomberok', 'longitude' => 19.308419, 'latitude' => 49.084017],
+            [ 'name' => 'Štrba', 'longitude' => 20.066729, 'latitude' => 49.082944],
+            [ 'name' => 'Margecany', 'longitude' => 21.014208, 'latitude' => 48.894476],
         ];
+         
+
+
+
 
         // Insert stations into the database
         DB::table('stations')->insert($stations);

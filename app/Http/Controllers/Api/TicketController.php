@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
 {
@@ -38,6 +39,20 @@ class TicketController extends Controller
             $ticket->arrival_time_at = $endRoute
                 ? Carbon::parse($endRoute->departure_time)->isoFormat('D.M. H:mm')
                 : null;
+
+            // Add station details to each route
+            $ticket->train->routes = $ticket->train->routes->map(function ($route) {
+                $station = DB::table('stations')->where('id', $route->station_id)->first();
+
+                if ($station) {
+                    // Merge station attributes into the route
+                    $route->station_name = $station->name;
+                    $route->latitude = (float) $station->latitude;
+                    $route->longitude = (float) $station->longitude;
+                }
+
+                return $route;
+            });
 
             return $ticket;
         });
