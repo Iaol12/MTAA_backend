@@ -20,7 +20,8 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'password',
-        'zlava_id',
+        'discount_id',
+        'card_id',
         'user_role',
     ];
 
@@ -28,7 +29,7 @@ class User extends Authenticatable
 
     public function discount()
     {
-        return $this->belongsTo(Discount::class, 'zlava_id');
+        return $this->belongsTo(Discount::class, 'discount_id');
     }
 
     public function role()

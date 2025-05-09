@@ -9,7 +9,7 @@ class Train extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['name', 'delay'];
+    protected $fillable = ['name', 'discounted_tickets', 'delay'];
 
     public function routes()
     {

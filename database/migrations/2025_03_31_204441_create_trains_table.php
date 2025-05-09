@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('trains', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('discounted_tickets')->default(20);
             $table->time('delay')->nullable();    // same
         });
     }
