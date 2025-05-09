@@ -39,6 +39,11 @@ class UserSeeder extends Seeder
 
         // Iterate over each train and create tickets
         foreach ($trains as $train) {
+            $random = rand(1, 100);
+            if ($random < 95) {
+                // Skip 50% of the trains
+                continue;
+            }
             // Fetch all stations in the train's route
             $routeStations = DB::table('routes')
                 ->where('train_id', $train->id)
