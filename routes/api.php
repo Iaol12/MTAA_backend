@@ -45,7 +45,8 @@ Route::middleware('auth:sanctum')->put('/user/profile', [UserController::class, 
 
 Route::middleware('auth:sanctum')->post('/store-token', [UserController::class, 'storeExpoToken']);
 
-Route::post('/trains/{train}/delay', [TrainController::class, 'delay']);
+
+Route::middleware('auth:sanctum')->post('/trains/{train}/delay', [TrainController::class, 'delay']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/update-profile', [UserController::class, 'updateProfile']);
@@ -54,10 +55,10 @@ Route::middleware('auth:sanctum')->group(function () {
 //discounts
 Route::apiResource('zlavy', DiscountController::class); // vygeneruje všetky CRUD operácie
 Route::get('/zlavy', [DiscountController::class, 'index']);     //v podstate tieto    
-Route::get('/zlavy/{id}', [DiscountController::class, 'show']);    // <-
-Route::post('/zlavy', [DiscountController::class, 'store']);       
-Route::put('/zlavy/{id}', [DiscountController::class, 'update']);  
-Route::delete('/zlavy/{id}', [DiscountController::class, 'destroy']); 
+Route::get('/zlavy/{id}', [DiscountController::class, 'show']);
+Route::post('/zlavy', [DiscountController::class, 'store']);
+Route::put('/zlavy/{id}', [DiscountController::class, 'update']);
+Route::delete('/zlavy/{id}', [DiscountController::class, 'destroy']);
 
 //discountCard
 Route::apiResource('karty', DiscountCardController::class);

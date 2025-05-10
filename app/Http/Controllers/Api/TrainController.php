@@ -117,6 +117,11 @@ class TrainController extends Controller
 
     public function delay(Request $request, Train $train)
     {
+        // Check if the authenticated user is an admin
+        if(auth()->user()->role->privilege != 2) {
+            return response()->json(['error' => 'Nemáte oprávnenie na nastavenie meškania vlaku.'], 403);
+        }
+
         $request->validate([
             'hours' => 'nullable|integer|min:0',
             'minutes' => 'required|integer|min:0',
@@ -139,13 +144,28 @@ class TrainController extends Controller
         // Poslať push notifikácie všetkým používateľom s expo tokenom
         $users = User::whereNotNull('expo_token')->get();
 
+        // Get service instance once outside the loop
+        $notificationService = app(\App\Services\ExpoPushNotificationService::class);
+
         foreach ($users as $user) {
-            app(\App\Services\ExpoPushNotificationService::class)->sendPushNotification(
-                $user->expo_token,
-                'Meškanie vlaku',
-                "{$train->name} mešká {$delayMinutes} minút."
-            );
-            \Log::info("Odosielam push pre používateľa {$user->id} na token {$user->expo_token}");
+            try {
+                // Skip users with invalid tokens
+                if (empty($user->expo_token)) {
+                    \Log::warning("Preskakujem používateľa {$user->id} - chýbajúci expo token");
+                    continue;
+                }
+                
+                $notificationService->sendPushNotification(
+                    $user->expo_token,
+                    'Meškanie vlaku',
+                    "{$train->name} mešká {$delayMinutes} minút."
+                );
+                
+                \Log::info("Odosielam push pre používateľa {$user->id} na token {$user->expo_token}");
+            } catch (\Exception $e) {
+                // Log the error but continue with other users
+                \Log::error("Chyba pri odosielaní push notifikácie používateľovi {$user->id}: {$e->getMessage()}");
+            }
         }
 
         return response()->json(['message' => 'Meškanie bolo úspešne odoslané.']);
