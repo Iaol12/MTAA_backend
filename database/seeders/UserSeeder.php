@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
         // Iterate over each train and create tickets
         foreach ($trains as $train) {
             $random = rand(1, 100);
-            if ($random < 95) {
+            if ($random < 99) {
                 // Skip 50% of the trains
                 continue;
             }
