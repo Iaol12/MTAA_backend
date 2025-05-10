@@ -63,6 +63,26 @@ class UserController extends Controller
         ], 201);
     }
 
+    public function storeExpoToken(Request $request)
+    {
+        // Validácia tokenu
+        $request->validate([
+            'expo_token' => 'required|string',
+        ]);
+
+        // Získanie používateľa podľa tokenu (alebo iného spôsobu autentifikácie)
+        $user = auth()->user(); // Toto predpokladá, že používateľ je autentifikovaný
+
+        // Uloženie expo tokenu do databázy
+        $user->expo_token = $request->expo_token;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Expo token uložený úspešne.',
+        ]);
+    }
+
+
     /**
      * @OA\Post(
      *     path="/api/login",
