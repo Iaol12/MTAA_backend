@@ -270,8 +270,19 @@ class TrainController extends Controller
             // Override the routes relationship with the filtered collection
             $train->setRelation('routes', $filteredRoutes);
 
+            if ($train->delay) {
+                list($hours, $minutes) = array_pad(explode(':', $train->delay), 2, 0);
+                $train->delay = (int)$hours * 60 + (int)$minutes;
+                
+            }
+
             return $train;
         });
+        $trains = $trains->sortBy(function ($train) {
+            // Get the first route in sequence (departure station)
+            $firstRoute = $train->routes->sortBy('sequence_number')->first();
+            return $firstRoute ? $firstRoute['departure_time'] : null;
+        })->values();
 
         // Apply pagination manually
         $total = $trains->count();
