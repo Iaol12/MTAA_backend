@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('discount_id')->nullable();
             $table->string('card_id', 100)->nullable();
             $table->unsignedBigInteger('user_role')->default(1);
+            $table->string('profile_image')->nullable();
 
             $table->foreign('discount_id')->references('id')->on('discounts');
             $table->foreign('user_role')->references('id')->on('user_roles');
