@@ -39,20 +39,28 @@ class TrainScheduleSeeder extends Seeder
                 ['name' => 'Margecany', 'departure_time' => '08:26:00'],
                 ['name' => 'Kysak', 'departure_time' => '08:50:00'],
                 ['name' => 'Košice', 'departure_time' => '09:17:00'],
+
+                
             ]
         ],
-        // To add a new train, just add a new entry here:
-        // [
-        //     'name_pattern' => 'R %d VLTAVA',
-        //     'starting_number' => 800,
-        //     'trains_per_day' => 12,
-        //     'hours_between_trains' => 2,
-        //     'stations' => [
-        //         ['name' => 'Košice', 'departure_time' => '05:00:00'],
-        //         ['name' => 'Poprad-Tatry', 'departure_time' => '06:20:00'],
-        //         // ... other stations ...
-        //     ]
-        // ],
+        
+        [
+            'name_pattern' => 'Os %d SEDITA',
+            'starting_number' => 800,
+            'trains_per_day' => 12,
+            'hours_between_trains' => 1,
+            'stations' => [
+                ['name' => 'Bratislava hl.st.', 'departure_time' => '04:55:00'],
+                ['name' => 'Bratislava-Vajnory', 'departure_time' => '05:00:00'],
+                ['name' => 'Ivanka pri Dunaji', 'departure_time' => '05:10:00'],
+                ['name' => 'Bernolákovo', 'departure_time' => '05:20:00'],
+                ['name' => 'Senec', 'departure_time' => '05:25:00'],
+                ['name' => 'Reca', 'departure_time' => '05:35:00'],
+                ['name' => 'Pusté Úľany', 'departure_time' => '05:50:00'],
+                ['name' => 'Sládkovičovo', 'departure_time' => '06:00:00'],
+                ['name' => 'Galanta', 'departure_time' => '06:20:00'],
+            ]
+        ],
     ];
 
     /**

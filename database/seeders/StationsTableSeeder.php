@@ -44,6 +44,15 @@ class StationsTableSeeder extends Seeder
             [ 'name' => 'Ružomberok', 'longitude' => 19.308419, 'latitude' => 49.084017],
             [ 'name' => 'Štrba', 'longitude' => 20.066729, 'latitude' => 49.082944],
             [ 'name' => 'Margecany', 'longitude' => 21.014208, 'latitude' => 48.894476],
+        
+            [ 'name' => 'Bratislava-Vajnory', 'longitude' => 17.20759, 'latitude' => 48.20563 ],
+            [ 'name' => 'Ivanka pri Dunaji', 'longitude' => 17.2554, 'latitude' => 48.18675 ],
+            [ 'name' => 'Bernolákovo', 'longitude' => 17.2731, 'latitude' => 48.2195 ],
+            [ 'name' => 'Senec', 'longitude' => 17.40043, 'latitude' => 48.21951 ],
+            [ 'name' => 'Reca', 'longitude' => 17.4667, 'latitude' => 48.2333 ],
+            [ 'name' => 'Pusté Úľany', 'longitude' => 17.5715, 'latitude' => 48.2192 ],
+            [ 'name' => 'Sládkovičovo', 'longitude' => 17.63852, 'latitude' => 48.20137 ],
+            [ 'name' => 'Galanta', 'longitude' => 17.7269, 'latitude' => 48.1911 ],
         ];
          
 
